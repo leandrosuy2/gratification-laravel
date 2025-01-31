@@ -13,6 +13,5 @@
                 </div>
             </div>
         </div>
-        <x-heroicon-o-home class="w-6 h-6 text-gray-500" />
     </div>
 </x-app-layout>

@@ -9,10 +9,23 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
+/**
+ * @OA\Tag(name="Authentication")
+ */
 class ConfirmablePasswordController extends Controller
 {
     /**
      * Show the confirm password view.
+     *
+     * @OA\Get(
+     *     path="/confirm-password",
+     *     tags={"Authentication"},
+     *     summary="Display the password confirmation view",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Password confirmation page displayed"
+     *     )
+     * )
      */
     public function show(): View
     {
@@ -21,6 +34,27 @@ class ConfirmablePasswordController extends Controller
 
     /**
      * Confirm the user's password.
+     *
+     * @OA\Post(
+     *     path="/confirm-password",
+     *     tags={"Authentication"},
+     *     summary="Confirm the user's password",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"password"},
+     *             @OA\Property(property="password", type="string", format="password", example="password123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Password confirmed successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Invalid password"
+     *     )
+     * )
      */
     public function store(Request $request): RedirectResponse
     {

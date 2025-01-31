@@ -1,0 +1,1823 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Gratification API",
+        "description": "Documentação da API do Gratification",
+        "contact": {
+            "email": "suporte@gratification.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/login": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Display the login view",
+                "description": "Display the login view.",
+                "operationId": "d38b0625602ec8e41c3bb98aa2e969de",
+                "responses": {
+                    "200": {
+                        "description": "Login page displayed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Authenticate a user",
+                "description": "Handle an incoming authentication request.",
+                "operationId": "42f77e072dec84b0e1094cca1228298e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User authenticated successfully"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout a user",
+                "description": "Destroy an authenticated session.",
+                "operationId": "03afb12b342c2ea43bdc1de4f39e91a8",
+                "responses": {
+                    "200": {
+                        "description": "User logged out successfully"
+                    }
+                }
+            }
+        },
+        "/confirm-password": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Display the password confirmation view",
+                "description": "Show the confirm password view.",
+                "operationId": "cb7fda87fdc05e9ad0ee3b000f4febaa",
+                "responses": {
+                    "200": {
+                        "description": "Password confirmation page displayed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Confirm the user's password",
+                "description": "Confirm the user's password.",
+                "operationId": "dc62efc6d3a9c874a5c5c974e0b69df4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password confirmed successfully"
+                    },
+                    "401": {
+                        "description": "Invalid password"
+                    }
+                }
+            }
+        },
+        "/email/verification-notification": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Send a new email verification notification",
+                "description": "Send a new email verification notification.",
+                "operationId": "7c01a354a5960445207bc5d2f17d547e",
+                "responses": {
+                    "200": {
+                        "description": "Email verification link sent"
+                    },
+                    "400": {
+                        "description": "Email already verified or error sending verification link"
+                    }
+                }
+            }
+        },
+        "/email/verify": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Display the email verification prompt",
+                "description": "Display the email verification prompt.",
+                "operationId": "4b827d276f46c16e5fc96596a67d53cd",
+                "responses": {
+                    "200": {
+                        "description": "Email verification prompt displayed"
+                    },
+                    "302": {
+                        "description": "Redirect to dashboard if email is already verified"
+                    }
+                }
+            }
+        },
+        "/reset-password/{token}": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Display the password reset view",
+                "description": "Display the password reset view.",
+                "operationId": "139cbd7a33506f23db79a42dd3a1b825",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "Password reset token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Password reset view displayed"
+                    }
+                }
+            }
+        },
+        "/reset-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Handle password reset request",
+                "description": "Handle an incoming new password request.",
+                "operationId": "24b1c68468bf984b8806908f211f3827",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "token",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "reset-token"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset successfully"
+                    },
+                    "400": {
+                        "description": "Error in password reset"
+                    }
+                }
+            }
+        },
+        "/user/password": {
+            "put": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Update the user's password",
+                "description": "Update the user's password.",
+                "operationId": "b2eb628b6e49b9a32146aae16edcf3f3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "current_password",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "current_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "oldpassword123"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password updated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid current password or invalid data"
+                    }
+                }
+            }
+        },
+        "/forgot-password": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Display the password reset link request view",
+                "description": "Display the password reset link request view.",
+                "operationId": "488381143077833cec81be2e4235c339",
+                "responses": {
+                    "200": {
+                        "description": "Forgot password page displayed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Send a password reset link to the user",
+                "description": "Handle an incoming password reset link request.",
+                "operationId": "888e4aa5b202b170b9fe831da90048c6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset link sent successfully"
+                    },
+                    "400": {
+                        "description": "Error sending password reset link"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Exibe o formulário de registro",
+                "operationId": "711394cf638654593b284d884e4c5be4",
+                "responses": {
+                    "200": {
+                        "description": "Retorna a página de registro"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Cria um novo usuário",
+                "operationId": "573de1fed352c1205a32c4d1b9877375",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "username"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "telcel": {
+                                        "type": "string",
+                                        "example": "+5511999999999"
+                                    },
+                                    "id_perfil": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "setor": {
+                                        "type": "string",
+                                        "example": "TI"
+                                    },
+                                    "status": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "menu_permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "profile_image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado com sucesso"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/email/verify/{id}/{hash}": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Verify the user's email address",
+                "description": "Mark the authenticated user's email address as verified.",
+                "operationId": "defff15cf49d15083f3d7d2284955a29",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "description": "Verification hash",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Email verified successfully"
+                    },
+                    "400": {
+                        "description": "Error during email verification"
+                    }
+                }
+            }
+        },
+        "/empresas": {
+            "get": {
+                "tags": [
+                    "Empresa"
+                ],
+                "summary": "Listar todas as empresas",
+                "operationId": "22631014ece23858d19a7ef1c89f0e78",
+                "responses": {
+                    "200": {
+                        "description": "Lista de todas as empresas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "docs": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nome": {
+                                                        "type": "string",
+                                                        "example": "Empresa X"
+                                                    },
+                                                    "razao_social": {
+                                                        "type": "string",
+                                                        "example": "Razão Social X"
+                                                    },
+                                                    "status": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Empresa"
+                ],
+                "summary": "Criar uma nova empresa",
+                "operationId": "edd395f6abdaa55cb0284b3b198d7ad6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "logo": {
+                                        "type": "string",
+                                        "example": "logo.png"
+                                    },
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "Empresa X"
+                                    },
+                                    "razao_social": {
+                                        "type": "string",
+                                        "example": "Razão Social X"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "empresa@x.com"
+                                    },
+                                    "telcom": {
+                                        "type": "string",
+                                        "example": "123456789"
+                                    },
+                                    "telcel": {
+                                        "type": "string",
+                                        "example": "987654321"
+                                    },
+                                    "cnpj": {
+                                        "type": "string",
+                                        "example": "12.345.678/0001-90"
+                                    },
+                                    "status": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Empresa criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Empresa criada com sucesso!"
+                                        },
+                                        "docs": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nome": {
+                                                    "type": "string",
+                                                    "example": "Empresa X"
+                                                },
+                                                "razao_social": {
+                                                    "type": "string",
+                                                    "example": "Razão Social X"
+                                                },
+                                                "status": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/empresas/{id}": {
+            "get": {
+                "tags": [
+                    "Empresa"
+                ],
+                "summary": "Exibir uma empresa específica",
+                "operationId": "1ab6ccd465b58367f4064aa417a103be",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes de uma empresa específica",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "docs": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nome": {
+                                                    "type": "string",
+                                                    "example": "Empresa X"
+                                                },
+                                                "razao_social": {
+                                                    "type": "string",
+                                                    "example": "Razão Social X"
+                                                },
+                                                "status": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Empresa"
+                ],
+                "summary": "Atualizar uma empresa",
+                "operationId": "b61661cfb086a49afd6ebebf15ed6011",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "logo": {
+                                        "type": "string",
+                                        "example": "logo_updated.png"
+                                    },
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "Empresa Y"
+                                    },
+                                    "razao_social": {
+                                        "type": "string",
+                                        "example": "Razão Social Y"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "empresa@y.com"
+                                    },
+                                    "status": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Empresa atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Empresa atualizada com sucesso!"
+                                        },
+                                        "docs": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nome": {
+                                                    "type": "string",
+                                                    "example": "Empresa X"
+                                                },
+                                                "razao_social": {
+                                                    "type": "string",
+                                                    "example": "Razão Social X"
+                                                },
+                                                "status": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Empresa"
+                ],
+                "summary": "Excluir uma empresa",
+                "operationId": "56b2aac859ceb472597b45436c7f5f12",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Empresa excluída com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Empresa excluída com sucesso!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/gerentes": {
+            "get": {
+                "tags": [
+                    "Gerente"
+                ],
+                "summary": "Listar todos os gerentes",
+                "operationId": "68c3ce3efcb96c3d57da233bdfb457e0",
+                "responses": {
+                    "200": {
+                        "description": "Lista de todos os gerentes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "recordsTotal": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "recordsFiltered": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "docs": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "id_usuario": {
+                                                        "type": "string",
+                                                        "example": "123"
+                                                    },
+                                                    "status": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "usuario": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "João Silva"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Gerente"
+                ],
+                "summary": "Criar um novo gerente",
+                "operationId": "69beae49b5e6b6ac10fbf33b1c60b2e7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_usuario": {
+                                        "type": "string",
+                                        "example": "123"
+                                    },
+                                    "status": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Gerente criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Gerente criado com sucesso!"
+                                        },
+                                        "docs": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "id_usuario": {
+                                                    "type": "string",
+                                                    "example": "123"
+                                                },
+                                                "status": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/gerentes/{id}": {
+            "get": {
+                "tags": [
+                    "Gerente"
+                ],
+                "summary": "Exibir um gerente específico",
+                "operationId": "dc73d69a5d8fb3117300877019fd0167",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes de um gerente específico",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "docs": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "id_usuario": {
+                                                    "type": "string",
+                                                    "example": "123"
+                                                },
+                                                "status": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "usuario": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "João Silva"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Gerente"
+                ],
+                "summary": "Atualizar um gerente",
+                "operationId": "babc3b9ebc5ab1b30a6a193e21cfed55",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_usuario": {
+                                        "type": "string",
+                                        "example": "123"
+                                    },
+                                    "status": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Gerente atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Gerente atualizado com sucesso!"
+                                        },
+                                        "docs": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "id_usuario": {
+                                                    "type": "string",
+                                                    "example": "123"
+                                                },
+                                                "status": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Gerente"
+                ],
+                "summary": "Excluir um gerente",
+                "operationId": "aa51b08e92c0519f1ffb8c5e4db8adb8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Gerente excluído com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Gerente excluído com sucesso!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/perfil_acessos": {
+            "get": {
+                "tags": [
+                    "PerfilAcesso"
+                ],
+                "summary": "Listar todos os perfis de acesso",
+                "operationId": "74f8bf7dc534e8fb475e256c744b5715",
+                "responses": {
+                    "200": {
+                        "description": "Lista de todos os perfis de acesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "recordsTotal": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "recordsFiltered": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "docs": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nome": {
+                                                        "type": "string",
+                                                        "example": "Administrador"
+                                                    },
+                                                    "descricao": {
+                                                        "type": "string",
+                                                        "example": "Acesso total"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/profile/edit": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Exibir o formulário de edição do perfil do usuário",
+                "operationId": "d06bd8fd9d326eb7a380edbdcea9928f",
+                "responses": {
+                    "200": {
+                        "description": "Exibe o formulário de edição do perfil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "João Silva"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "joao.silva@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/profile/update": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Atualizar as informações do perfil do usuário",
+                "operationId": "6ed305f4c4bd48cdaa2e5066f5b7f156",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "João Silva"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "joao.silva@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Perfil atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Perfil atualizado com sucesso!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/profile/destroy": {
+            "delete": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Excluir a conta do usuário",
+                "operationId": "f0b6b3203be521955bd3605d26943b51",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "example": "senhaatual"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Conta excluída com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Conta excluída com sucesso!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/servicos": {
+            "get": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Listar todos os serviços",
+                "operationId": "716bb4129123ce67b7baba7785ae7ac4",
+                "responses": {
+                    "200": {
+                        "description": "Lista de todos os serviços",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "recordsTotal": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "recordsFiltered": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "docs": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "nome": {
+                                                        "type": "string",
+                                                        "example": "Serviço de Limpeza"
+                                                    },
+                                                    "tipo_servico": {
+                                                        "type": "string",
+                                                        "example": "Limpeza"
+                                                    },
+                                                    "hora_inicio": {
+                                                        "type": "string",
+                                                        "example": "08:00:00"
+                                                    },
+                                                    "hora_final": {
+                                                        "type": "string",
+                                                        "example": "16:00:00"
+                                                    },
+                                                    "status": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "user_add": {
+                                                        "type": "string",
+                                                        "example": "admin"
+                                                    },
+                                                    "empresa": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "nome": {
+                                                                "type": "string",
+                                                                "example": "Empresa X"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Criar um novo serviço",
+                "operationId": "310641dcdd4b36dce76883fe6ec1b8a5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_empresa": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "tipo_servico": {
+                                        "type": "string",
+                                        "example": "Limpeza"
+                                    },
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "Serviço de Limpeza"
+                                    },
+                                    "hora_inicio": {
+                                        "type": "string",
+                                        "example": "08:00:00"
+                                    },
+                                    "hora_final": {
+                                        "type": "string",
+                                        "example": "16:00:00"
+                                    },
+                                    "status": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "user_add": {
+                                        "type": "string",
+                                        "example": "admin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Serviço criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Serviço criado com sucesso!"
+                                        },
+                                        "docs": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nome": {
+                                                    "type": "string",
+                                                    "example": "Serviço de Limpeza"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/servicos/{id}": {
+            "get": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Exibir serviço específico",
+                "operationId": "54bae8d5a1accb38f3ba76a18fe3569b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do serviço",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "docs": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nome": {
+                                                    "type": "string",
+                                                    "example": "Serviço de Limpeza"
+                                                },
+                                                "tipo_servico": {
+                                                    "type": "string",
+                                                    "example": "Limpeza"
+                                                },
+                                                "hora_inicio": {
+                                                    "type": "string",
+                                                    "example": "08:00:00"
+                                                },
+                                                "hora_final": {
+                                                    "type": "string",
+                                                    "example": "16:00:00"
+                                                },
+                                                "status": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "user_add": {
+                                                    "type": "string",
+                                                    "example": "admin"
+                                                },
+                                                "empresa": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "nome": {
+                                                            "type": "string",
+                                                            "example": "Empresa X"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Atualizar um serviço existente",
+                "operationId": "b19a6cef84ae349570fedf3dcb2940e8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_empresa": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "tipo_servico": {
+                                        "type": "string",
+                                        "example": "Limpeza"
+                                    },
+                                    "nome": {
+                                        "type": "string",
+                                        "example": "Serviço de Limpeza"
+                                    },
+                                    "hora_inicio": {
+                                        "type": "string",
+                                        "example": "08:00:00"
+                                    },
+                                    "hora_final": {
+                                        "type": "string",
+                                        "example": "16:00:00"
+                                    },
+                                    "status": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "user_add": {
+                                        "type": "string",
+                                        "example": "admin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Serviço atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Serviço atualizado com sucesso!"
+                                        },
+                                        "docs": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nome": {
+                                                    "type": "string",
+                                                    "example": "Serviço de Limpeza"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Excluir um serviço",
+                "operationId": "1cbfb2a065ac384a9b14432431f2bb69",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Serviço excluído com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Serviço excluído com sucesso!"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/usuarios": {
+            "get": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Listar todos os usuários",
+                "operationId": "856e795f5d5450966d6b2da23cad7554",
+                "responses": {
+                    "200": {
+                        "description": "Lista de todos os usuários",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "recordsTotal": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "recordsFiltered": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "docs": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "João Silva"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "joao.silva@example.com"
+                                                    },
+                                                    "perfil": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "nome": {
+                                                                "type": "string",
+                                                                "example": "Administrador"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication"
+        },
+        {
+            "name": "Empresa",
+            "description": "Operações relacionadas a empresas"
+        },
+        {
+            "name": "Gerente",
+            "description": "Operações relacionadas a gerentes"
+        },
+        {
+            "name": "PerfilAcesso",
+            "description": "Operações relacionadas a perfis de acesso"
+        },
+        {
+            "name": "Profile",
+            "description": "Operações relacionadas ao perfil do usuário"
+        },
+        {
+            "name": "Servico",
+            "description": "Operações relacionadas a serviços"
+        },
+        {
+            "name": "Usuario",
+            "description": "Operações relacionadas a usuários"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth"
+        }
+    ]
+}

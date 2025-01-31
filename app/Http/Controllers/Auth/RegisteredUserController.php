@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\PerfilAcesso; // Adicionando o modelo PerfilAcesso
+use App\Models\PerfilAcesso;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,54 +14,91 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
+/**
+ * @OA\Info(
+ *      title="Gratification API",
+ *      version="1.0.0",
+ *      description="Documentação da API do Gratification",
+ *      @OA\Contact(
+ *          email="suporte@gratification.com"
+ *      ),
+ * )
+ */
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * @OA\Get(
+     *     path="/register",
+     *     summary="Exibe o formulário de registro",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Retorna a página de registro"
+     *     )
+     * )
      */
     public function create(): View
     {
-        // Recupera todos os perfis de acesso para passar à view
         $perfis = PerfilAcesso::all();
-
         return view('auth.register', compact('perfis'));
     }
 
     /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * @OA\Post(
+     *     path="/register",
+     *     summary="Cria um novo usuário",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email", "password", "username"},
+     *             @OA\Property(property="name", type="string", example="John Doe"),
+     *             @OA\Property(property="email", type="string", format="email", example="johndoe@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="password123"),
+     *             @OA\Property(property="username", type="string", example="johndoe"),
+     *             @OA\Property(property="telcel", type="string", example="+5511999999999"),
+     *             @OA\Property(property="id_perfil", type="integer", example=1),
+     *             @OA\Property(property="setor", type="string", example="TI"),
+     *             @OA\Property(property="status", type="boolean", example=true),
+     *             @OA\Property(property="menu_permissions", type="array", @OA\Items(type="string")),
+     *             @OA\Property(property="profile_image", type="string", format="binary")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Usuário criado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação"
+     *     )
+     * )
      */
     public function store(Request $request): RedirectResponse
     {
-        // Log the incoming registration request
         Log::info('Registration request received:', $request->all());
 
-        // Validate the incoming request
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'username' => ['required', 'string', 'max:255', 'unique:' . User::class],  // Assuming username is required
-            'telcel' => ['nullable', 'string', 'max:255'], // Assuming telcel is optional
-            'id_perfil' => ['nullable', 'integer', 'exists:perfil_acessos,id'], // Assuming id_perfil is optional, but must exist in perfil_acessos
-            'setor' => ['nullable', 'string', 'max:255'], // Assuming setor is optional
-            'status' => ['nullable', 'integer'], // Assuming status is optional
-            'menu_permissions' => ['nullable', 'array'], // Assuming menu_permissions is optional
-            'profile_image' => ['nullable', 'image', 'max:1024'], // Validate the image field
+            'username' => ['required', 'string', 'max:255', 'unique:' . User::class],
+            'telcel' => ['nullable', 'string', 'max:255'],
+            'id_perfil' => ['nullable', 'integer', 'exists:perfil_acessos,id'],
+            'setor' => ['nullable', 'string', 'max:255'],
+            'status' => ['nullable', 'integer'],
+            'menu_permissions' => ['nullable', 'array'],
+            'profile_image' => ['nullable', 'image', 'max:1024'],
         ]);
 
-        // Log the validated data (access data directly from $request->all())
-        Log::info('Validated data:', $request->all()); // Log all request data, validated data can be accessed this way
+        Log::info('Validated data:', $request->all());
 
-        // Lidar com o upload da imagem de perfil
         $profileImagePath = null;
         if ($request->hasFile('profile_image')) {
             $profileImagePath = $request->file('profile_image')->store('profile_images', 'public');
             Log::info('Profile image uploaded to: ' . $profileImagePath);
         }
 
-        // Create a new user and log the creation
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -70,24 +107,19 @@ class RegisteredUserController extends Controller
             'telcel' => $request->telcel,
             'id_perfil' => $request->id_perfil,
             'setor' => $request->setor,
-            'status' => true, // Status is always true as per the previous logic
+            'status' => true,
             'menu_permissions' => $request->menu_permissions,
-            'profile_image' => $profileImagePath, // Store the path of the uploaded image
+            'profile_image' => $profileImagePath,
         ]);
 
-        // Log the user creation
         Log::info('User created successfully:', $user->toArray());
 
-        // Trigger the Registered event
         event(new Registered($user));
 
-        // Log the login event
         Log::info('Logging in the user:', $user->toArray());
 
-        // Log the user in
         Auth::login($user);
 
-        // Redirect to dashboard
         return redirect(route('dashboard', absolute: false));
     }
 }
