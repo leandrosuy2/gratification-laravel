@@ -1785,6 +1785,222 @@
                     }
                 }
             }
+        },
+        "/votar": {
+            "post": {
+                "tags": [
+                    "Voto"
+                ],
+                "summary": "Registrar ou atualizar um voto para a empresa",
+                "operationId": "4cc17bbef63668d292513bc61cbdc508",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_empresa",
+                                    "id_gestor",
+                                    "qt_funcionarios",
+                                    "total_otimo",
+                                    "total_bom",
+                                    "total_regular",
+                                    "total_ruim"
+                                ],
+                                "properties": {
+                                    "id_empresa": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "id_gestor": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "qt_funcionarios": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "total_otimo": {
+                                        "type": "integer",
+                                        "example": 50
+                                    },
+                                    "total_bom": {
+                                        "type": "integer",
+                                        "example": 30
+                                    },
+                                    "total_regular": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "total_ruim": {
+                                        "type": "integer",
+                                        "example": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Voto atualizado com sucesso!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Voto atualizado com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Voto"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Voto registrado com sucesso!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Voto registrado com sucesso!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Voto"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos dados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erro de validação"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/votos": {
+            "get": {
+                "tags": [
+                    "Voto"
+                ],
+                "summary": "Listar todos os votos",
+                "operationId": "637fe220190be9295df9f6d44e5e4438",
+                "responses": {
+                    "200": {
+                        "description": "Lista de votos registrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 100
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Voto"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Voto": {
+                "properties": {
+                    "data_registro": {
+                        "type": "string",
+                        "example": "2025-01-31"
+                    },
+                    "id_empresa": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "id_gestor": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "qt_funcionarios": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "total_otimo": {
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "total_bom": {
+                        "type": "integer",
+                        "example": 30
+                    },
+                    "total_regular": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "total_ruim": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "perc_otimo": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 50
+                    },
+                    "perc_bom": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 30
+                    },
+                    "perc_regular": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 10
+                    },
+                    "perc_ruim": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 10
+                    }
+                },
+                "type": "object"
+            }
         }
     },
     "tags": [
@@ -1818,6 +2034,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Voto",
+            "description": "Voto"
         }
     ]
 }

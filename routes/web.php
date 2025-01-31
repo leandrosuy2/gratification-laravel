@@ -6,6 +6,7 @@ use App\Http\Controllers\PerfilAcessoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServicoController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\VotoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -47,5 +48,8 @@ Route::middleware('auth:web')->get('/servicos/{id}', [ServicoController::class, 
 Route::middleware('auth:web')->post('/servicos', [ServicoController::class, 'store']);
 Route::middleware('auth:web')->put('/servicos/{id}', [ServicoController::class, 'update']);
 Route::middleware('auth:web')->delete('/servicos/{id}', [ServicoController::class, 'destroy']);
+
+Route::post('/votar', [VotoController::class, 'votar'])->withoutMiddleware('auth:api');
+Route::get('/votos', [VotoController::class, 'listarVotos']);
 
 require __DIR__ . '/auth.php';
